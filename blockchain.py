@@ -1,3 +1,5 @@
+import functools
+
 MINING_REWARD = 10
 
 genesis_block = {
@@ -17,17 +19,14 @@ def hash_block(block):
 def get_balance(participant):
     tx_sender = [[tx["amount"] for tx in block["transactions"] if tx["sender"] == participant] for block in blockchain]
     open_tx_sender = [tx["amount"] for tx in open_transactions if tx["sender"] == participant]
+
     tx_sender.append(open_tx_sender)
-    amount_sent = 0
-    for tx in tx_sender:
-        if len(tx) > 0:
-            amount_sent += tx[0]
+    amount_sent = functools.reduce(lambda tx_sum, tx_amount: tx_sum + sum(tx_amount) if len(tx_amount) > 0 else tx_sum + 0, tx_sender, 0)
+
     tx_recipient = [[tx["amount"] for tx in block["transactions"] if tx["recipient"] == participant] for block in blockchain]
-    amount_revived = 0
-    for tx in tx_recipient:
-        if len(tx) > 0:
-            amount_revived += tx[0]
-    return amount_revived - amount_sent
+    amount_recived = functools.reduce(lambda tx_sum, tx_amount: tx_sum + sum(tx_amount) if len(tx_amount) > 0 else tx_sum + 0, tx_recipient, 0)
+
+    return amount_recived - amount_sent
 
 
 def get_last_blockchain_value():
@@ -162,7 +161,7 @@ while waiting_for_input:
         print_blockchain_elements()
         print("Inválid blockchain")
         break
-    print(get_balance("Guilherme"))
+    print("Balance of {}: {:6.2f}".format("Guilherme", get_balance("Guilherme")))
 else:
     print("User left")
 
