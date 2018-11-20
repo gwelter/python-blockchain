@@ -1,7 +1,8 @@
 import functools
 import hashlib
-import json
 from collections import OrderedDict
+
+from hash_util import hash_block, hash_string_sha256
 
 MINING_REWARD = 10
 
@@ -21,10 +22,6 @@ def valid_proof(transactions, last_hash, proof):
     guess_hash = hashlib.sha256(guess).hexdigest()
     print(guess_hash)
     return guess_hash[:2] == '00'
-
-
-def hash_block(block):
-    return hashlib.sha256(json.dumps(block, sort_keys=true).encode()).hexdigest()
 
 
 def proof_of_work():
@@ -68,9 +65,9 @@ def verify_transactions():
 def add_transaction(recipient, sender=owner, amount=1.0):
     """ Append a new value as well as the last blockchain value to the blockchain"""
     transaction = OrderedDict([
-        ("sender": sender),
-        ("recipient": recipient),
-        ("amount": amount)
+        ("sender", sender),
+        ("recipient", recipient),
+        ("amount", amount)
     ])
     if verify_transaction(transaction):
         open_transactions.append(transaction)
@@ -85,9 +82,9 @@ def mine_block():
     block_hash = hash_block(blockchain[-1])
     proof = proof_of_work()
     reward_transaction = OrderedDict([
-        ("sender": "MINING"),
-        ("recipient": owner),
-        ("amount": MINING_REWARD)
+        ("sender", "MINING"),
+        ("recipient", owner),
+        ("amount", MINING_REWARD)
     ])
     copied_transactions = open_transactions[:]
     copied_transactions.append(reward_transaction)
