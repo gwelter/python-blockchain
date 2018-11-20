@@ -19,7 +19,7 @@ participants = {"Guilherme"}
 
 def valid_proof(transactions, last_hash, proof):
     guess = (str(transactions) + str(last_hash) + str(proof)).encode()
-    guess_hash = hashlib.sha256(guess).hexdigest()
+    guess_hash = hash_string_sha256(guess)
     print(guess_hash)
     return guess_hash[:2] == '00'
 
