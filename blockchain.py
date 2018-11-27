@@ -171,7 +171,7 @@ waiting_for_input = True
 while waiting_for_input:
     print("\nPlease choose one option")
     print("1: Add a new transaction value")
-    print("2: Minea new block")
+    print("2: Mine a new block")
     print("3: Output the blockchain blocks")
     print("4: Output participants")
     print("5: Check transaction validity")
