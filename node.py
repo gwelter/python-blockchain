@@ -1,6 +1,13 @@
+from blockchain import Blockchain
+from verification import Verification
+
+from uuid import uuid4
+
 class Node:
     def __init__(self):
-        pass
+        # self.id = str(uuid4())
+        self.id = "Guilherme"
+        self.blockchain = Blockchain(self.id)
 
     def get_transaction_value(self):
         """ Get the value entered by the user as a Float """
@@ -15,7 +22,7 @@ class Node:
 
 
     def print_blockchain_elements(self):
-        for block in self.blockchain:
+        for block in self.blockchain.chain:
             print(block)
         else:
             print("-" * 20)
@@ -23,15 +30,14 @@ class Node:
 
     def listem_for_input(self):
         waiting_for_input = True
+        verifier = Verification()
 
         while waiting_for_input:
-            verifier = Verification()
             print("\nPlease choose one option")
             print("1: Add a new transaction value")
             print("2: Mine a new block")
             print("3: Output the blockchain blocks")
-            print("4: Output participants")
-            print("5: Check transaction validity")
+            print("4: Check transaction validity")
             print("h: Manipulate the blockchain")
             print("v: Verify chain")
             print("q: Quit")
@@ -39,21 +45,17 @@ class Node:
             if user_choice == "1":
                 tx_data = self.get_transaction_value()
                 recipient, amount = tx_data
-                if add_transaction(recipient, amount=amount):
+                if self.blockchain.add_transaction(recipient, self.id, amount=amount):
                     print("Transaction succeded")
                 else:
                     print("Transcation failed")
-                print(open_transactions)
+                print(self.blockchain.open_transactions)
             elif user_choice == "2":
-                if mine_block():
-                    open_transactions = []
-                    save_data()
+                self.blockchain.mine_block()
             elif user_choice == "3":
                 self.print_blockchain_elements()
             elif user_choice == "4":
-                print(participants)
-            elif user_choice == "5":
-                if verifier.verify_transactions(open_transactions, get_balance):
+                if verifier.verify_transactions(self.blockchain.open_transactions, self.blockchain.get_balance):
                     print("all valid")
                 else:
                     print("Not all valid")
@@ -61,13 +63,15 @@ class Node:
                 waiting_for_input = False
             else:
                 print("Input invalid, please pick a valid option")
-            if not verifier.verify_chain(blockchain):
-                print_blockchain_elements()
+            if not verifier.verify_chain(self.blockchain.chain):
+                self.print_blockchain_elements()
                 print("Inválid blockchain")
                 break
-            print("Balance of {}: {:6.2f}".format(
-                "Guilherme", get_balance("Guilherme")))
+            print("Balance of {}: {:6.2f}".format(self.id, self.blockchain.get_balance()))
         else:
             print("User left")
 
         print("Done")
+
+node = Node()
+node.listem_for_input()
