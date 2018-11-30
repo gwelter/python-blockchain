@@ -1,4 +1,4 @@
-from hash_util import hash_block, hash_string_sha256
+from utility.hash_util import hash_block, hash_string_sha256
 
 class Verification:
     @classmethod
