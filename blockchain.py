@@ -15,14 +15,20 @@ participants = {"Guilherme"}
 class Blockchain:
     def __init__(self, hosting_node):
         genesis_block = Block(0, "", [], 100)
-        self.__chain = [genesis_block]
+        self.chain = [genesis_block]
         self.__open_transactions = []
         self.load_data()
         self.hosting_node = hosting_node
 
 
-    def get_chain(self):
-        return self.__chain.copy()
+    @property
+    def chain(self):
+        return self.__chain[:]
+
+
+    @chain.setter
+    def chain(self, val):
+        self.__chain = val
 
 
     def get_open_transactions(self):

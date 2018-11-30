@@ -22,7 +22,7 @@ class Node:
 
 
     def print_blockchain_elements(self):
-        for block in self.blockchain.get_chain():
+        for block in self.blockchain.chain:
             print(block)
         else:
             print("-" * 20)
@@ -62,7 +62,7 @@ class Node:
                 waiting_for_input = False
             else:
                 print("Input invalid, please pick a valid option")
-            if not Verification.verify_chain(self.blockchain.get_chain()):
+            if not Verification.verify_chain(self.blockchain.chain):
                 self.print_blockchain_elements()
                 print("Inválid blockchain")
                 break
